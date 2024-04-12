@@ -15,7 +15,8 @@
     "jade": "^1.9.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.1",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "@vercel/node": "^1.8.5"
   },
   "devDependencies": {
     "constructs": "^10.3.0",
