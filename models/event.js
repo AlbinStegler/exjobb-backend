@@ -4,7 +4,7 @@ const ObjectId = require('mongodb').ObjectId;
 const eventModel = {
     getEvents: async function getEvents(req, res) {
         try {
-            const data = await event.find();
+            const data = await event.find().sort({ active: -1 });
             return res.json(data);
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -48,6 +48,7 @@ const eventModel = {
             if (activeEvent) {
                 await event.updateOne({ _id: activeEvent._id }, { $set: { active: false } });
             }
+            console.log(req.body)
             const filter2 = { eventName: req.body.eventName };
             const result = await event.findOneAndUpdate(filter2, { $set: { active: true } }, { new: true });
 
@@ -83,6 +84,7 @@ const eventModel = {
             let updateQuery = {};
             updateQuery[`seats.${row}.${nr}`] = "booked";
             if (activeEvent.seats[row][nr] === "booked") {
+                console.log("Seat already booked")
                 return res.status(400).json({ error: 'Seat already booked' });
             }
             const result = await event.updateOne(filter, { $set: updateQuery });

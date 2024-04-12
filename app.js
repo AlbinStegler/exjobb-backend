@@ -16,13 +16,29 @@ let adminRouter = require('./routes/admin');
 let pastRouter = require('./routes/past');
 
 let app = express();
+app.use(cors());
+
+function validateApiKey(req, res, next) {
+  try {
+    let apiKey = req.get("apiKey");
+    if (apiKey === process.env.API_KEY) {
+      next();
+    } else {
+      console.log("No apiKey supplied");
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+  }
+  catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 
 //Middleware
-app.use(cors());
+app.use(validateApiKey);
 app.disable("x-powered-by");
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
