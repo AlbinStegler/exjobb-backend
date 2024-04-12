@@ -6,7 +6,6 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "aws-amplify": "^6.0.19",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -19,10 +18,6 @@
     "morgan": "~1.9.1"
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^0.12.1",
-    "@aws-amplify/backend-cli": "^0.11.1",
-    "aws-cdk": "^2.131.0",
-    "aws-cdk-lib": "^2.131.0",
     "constructs": "^10.3.0",
     "typescript": "^5.4.2"
   }
