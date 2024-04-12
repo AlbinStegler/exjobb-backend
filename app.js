@@ -21,6 +21,8 @@ app.use(cors());
 function validateApiKey(req, res, next) {
   try {
     let apiKey = req.get("apiKey");
+    console.log(apiKey);
+    console.log("APIKEY saved" + process.env.API_KEY);
     if (apiKey === process.env.API_KEY) {
       next();
     } else {
