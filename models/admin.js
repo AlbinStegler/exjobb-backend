@@ -19,21 +19,21 @@ const adminModel = {
     },
     // NO NEED TO CREATE ADMIN FROM FRONTEND AS IT IS A ONE TIME OPERATION
 
-    // createAdmin: async function createAdmin(req, res) {
-    //     // Assuming req.body contains the admin data in the expected format
-    //     console.log('Admin data:', req.body);
-    //     const adminData = req.body;
-    //     try {
-    //         // Insert the admin data into the database
-    //         const result = await admin.create(adminData);
-    //         console.log('Admin added:', req.body.username);
-    //         // Return success response
-    //         return res.json({ message: 'Admin added', insertedId: result.insertedId });
-    //     } catch (error) {
-    //         console.error('Error adding admin:', error);
-    //         return res.status(500).json({ error: 'Internal Server Error' });
-    //     }
-    // }
+    createAdmin: async function createAdmin(req, res) {
+        // Assuming req.body contains the admin data in the expected format
+        console.log('Admin data:', req.body);
+        const adminData = req.body;
+        try {
+            // Insert the admin data into the database
+            const result = await admin.create(adminData);
+            console.log('Admin added:', req.body.username);
+            // Return success response
+            return res.json({ message: 'Admin added', insertedId: result.insertedId });
+        } catch (error) {
+            console.error('Error adding admin:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 };
 
 module.exports = adminModel;

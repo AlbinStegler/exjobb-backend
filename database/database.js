@@ -3,7 +3,7 @@ const { eventNames } = require("../app");
 
 const database = {
     getDb: async function getDb() {
-        let dsn;
+        let dsn = "mongodb://localhost:27017/lan";
         if (process.env.NODE_ENV === "test") {
             dsn = "mongodb://localhost:27017/lan";
         } else {
