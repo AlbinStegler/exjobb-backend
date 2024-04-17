@@ -94,11 +94,10 @@ const memberSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    "event": {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'event.eventName',
-        required: true
-    }
+    // "event": {
+    //     type: String,
+    //     required: false
+    // }
 });
 
 memberSchema.pre('save', async function (next) {
