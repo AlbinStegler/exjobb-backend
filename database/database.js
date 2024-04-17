@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { eventNames } = require("../app");
 
 const database = {
     getDb: async function getDb() {
@@ -94,10 +95,11 @@ const memberSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    // "event": {
-    //     type: String,
-    //     required: false
-    // }
+    "event": {
+        type: String,
+        ref: 'event.eventName',
+        required: true
+    }
 });
 
 memberSchema.pre('save', async function (next) {
