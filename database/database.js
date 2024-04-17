@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { eventNames } = require("../app");
 
 const database = {
     getDb: async function getDb() {
@@ -96,7 +95,7 @@ const memberSchema = new mongoose.Schema({
         default: false
     },
     "event": {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'event.eventName',
         required: true
     }
