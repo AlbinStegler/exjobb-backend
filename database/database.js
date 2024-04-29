@@ -47,11 +47,22 @@ const eventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    "eventType": {
+        type: String,
+        required: true
+    },
+    "eventLocation": {
+        type: String,
+    },
+    "eventDescription": {
+        type: String,
+    },
     "eventDate": {
         type: Date,
         required: true
     },
     "seats": DynamicSchema,
+    "visitors": { type: Array, default: [] },
     "active": { type: Boolean, default: false }
 });
 
@@ -100,6 +111,7 @@ const memberSchema = new mongoose.Schema({
         ref: 'event.eventName',
         required: true
     }
+
 });
 
 memberSchema.pre('save', async function (next) {

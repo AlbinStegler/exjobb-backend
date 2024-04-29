@@ -29,6 +29,12 @@ const userModel = {
             // Assuming req.body contains the user data in the expected format
             const userData = req.body;
             console.log('User data:', userData);
+            //Check if user already exists
+            const existingUser = await member.findOne({ email: userData.email });
+            if (existingUser) {
+                return res.status(400).json({ error: 'User already exists' });
+            }
+
             // Insert the user data into the database
             const result = await member.create(userData);
 

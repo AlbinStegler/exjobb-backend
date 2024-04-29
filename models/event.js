@@ -5,6 +5,11 @@ const eventModel = {
     getEvents: async function getEvents(req, res) {
         try {
             const data = await event.find().sort({ active: -1 });
+            data.sort((a, b) => {
+                if (a.eventDate < b.eventDate) return -1;
+                if (a.eventDate > b.eventDate) return 1;
+                return 0;
+            });
             return res.json(data);
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -43,10 +48,13 @@ const eventModel = {
     activateEvent: async function activateEvent(req, res) {
         try {
             // Check if there is an active event
-            const filter1 = { active: true };
+            const filter1 = { active: true, eventType: "Lan" };
             const activeEvent = await event.findOne(filter1);
             if (activeEvent) {
                 await event.updateOne({ _id: activeEvent._id }, { $set: { active: false } });
+                console.log("Active lan found and deactivated")
+            } else {
+                console.log("No active lan found activating new event")
             }
             console.log(req.body)
             const filter2 = { eventName: req.body.eventName };
@@ -61,7 +69,7 @@ const eventModel = {
     },
     getActiveEvent: async function getActiveEvents(req, res) {
         try {
-            const data = await event.findOne({ active: true });
+            const data = await event.findOne({ active: true, eventType: "Lan" });
             return res.json(data);
         } catch (error) {
             console.error('Error fetching event:', error);
@@ -71,10 +79,11 @@ const eventModel = {
     // Send the seat object in the request body to mark it as booked
     bookSeat: async function bookSeat(req, res) {
         try {
+            let nickname = req.body.nickname;
             let row = req.body.seat.row;
             let nr = req.body.seat.nr;
 
-            const filter = { active: true };
+            const filter = { active: true, eventType: "Lan" };
             const activeEvent = await event.findOne(filter);
 
             if (!activeEvent) {
@@ -82,8 +91,8 @@ const eventModel = {
             }
 
             let updateQuery = {};
-            updateQuery[`seats.${row}.${nr}`] = "booked";
-            if (activeEvent.seats[row][nr] === "booked") {
+            updateQuery[`seats.${row}.${nr}`] = nickname;
+            if (activeEvent.seats[row][nr] !== "free") {
                 console.log("Seat already booked")
                 return res.status(400).json({ error: 'Seat already booked' });
             }
@@ -97,12 +106,28 @@ const eventModel = {
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
+    bookVisitor: async function bookVisitor(req, res) {
+        try {
+            let nickname = req.body.nickname;
+            const filter = { active: true, eventType: "Lan" };
+            const activeEvent = await event.findOne(filter);
+            if (!activeEvent) {
+                return res.status(400).json({ error: 'No active event' });
+            }
+            activeEvent.visitors.push(nickname);
+            activeEvent.save();
+            return res.status(200).json({ message: 'Visitor booked successfully' });
+        } catch (error) {
+            console.error('Error booking visitor:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    },
     unbookSeat: async function unbookSeat(req, res) {
         try {
             let row = req.body.seat.row;
             let nr = req.body.seat.nr;
 
-            const filter = { active: true };
+            const filter = { active: true, eventType: "Lan" };
             const activeEvent = await event.findOne(filter);
 
             if (!activeEvent) {
