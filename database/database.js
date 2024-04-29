@@ -102,6 +102,10 @@ const memberSchema = new mongoose.Schema({
         "row": String,
         "seat": String
     },
+    "visitor": {
+        type: Boolean,
+        default: false
+    },
     "checked_in": {
         type: Boolean,
         default: false

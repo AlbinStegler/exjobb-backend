@@ -28,12 +28,13 @@ const userModel = {
         try {
             // Assuming req.body contains the user data in the expected format
             const userData = req.body;
-            console.log('User data:', userData);
-            //Check if user already exists
-            const existingUser = await member.findOne({ email: userData.email });
-            if (existingUser) {
-                return res.status(400).json({ error: 'User already exists' });
-            }
+            // console.log('User data:', userData);
+            // //Check if user already exists
+            // const existingUser = await member.findOne({ email: userData.email });
+            // console.log('Existing user:', existingUser);
+            // if (existingUser) {
+            //     return res.status(400).json({ error: 'User already exists' });
+            // }
 
             // Insert the user data into the database
             const result = await member.create(userData);
@@ -101,12 +102,30 @@ const userModel = {
     updateUser: async function updateUser(req, res) {
         try {
             const id = req.body._id;
+            console.log(req.body);
             console.log('User id:', id);
             const result = await member.findOneAndUpdate({ _id: id }, { $set: req.body }, { new: true });
             console.log('User updated:', result);
-            return res.json(result);
+            return res.status(200).json(result);
         } catch (error) {
             console.error('Error updating user:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    },
+    findByEmailorNickname: async function findByEmailorNickname(req, res) {
+        try {
+            const email = req.body.email;
+            const nickname = req.body.nickname;
+            console.log('Email:', email);
+            console.log('Nickname:', nickname);
+            const user = await member.findOne({ $or: [{ 'member.email': email }, { 'member.member_nick': nickname }] });
+            console.log
+            if (!user) {
+                return res.status(404).json({ error: 'User not found.' });
+            }
+            return res.json(user);
+        } catch (error) {
+            console.error('Error fetching user:', error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
