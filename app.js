@@ -14,6 +14,7 @@ let usersRouter = require('./routes/users');
 let eventRouter = require('./routes/event');
 let adminRouter = require('./routes/admin');
 let pastRouter = require('./routes/past');
+let sverokRouter = require('./routes/sverok');
 
 let app = express();
 app.use(cors());
@@ -57,6 +58,7 @@ app.use('/users', usersRouter);
 app.use('/event', eventRouter)
 app.use('/admin', adminRouter);
 app.use('/past', pastRouter);
+app.use('/sverok', sverokRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
