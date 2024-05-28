@@ -3,7 +3,7 @@ const sverokModel = {
         let api_key = process.env.SVEROK_API_KEY;
         console.log(req.body.member.member);
         try {
-            const data = await fetch(`https://ebas.sverok.se/apis/submit_member.json`, {
+            const response = await fetch(`https://ebas.sverok.se/apis/submit_member.json`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -13,6 +13,7 @@ const sverokModel = {
                     member: req.body.member.member
                 })
             });
+            const data = await response.json();
             console.log(data.status);
             if (data.requested_result === "success") {
                 console.log("User added");
