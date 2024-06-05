@@ -24,6 +24,18 @@ const database = {
     }
 };
 
+const logNewMember = new mongoose.Schema({
+    "nickname": {
+        type: String,
+        required: true
+    },
+    "timestamp": {
+        type: Date,
+        required: true
+    }
+});
+const memberLog = mongoose.model("memberLog", logNewMember);
+
 
 const adminSchema = new mongoose.Schema({
     "username": {
@@ -142,4 +154,4 @@ const pastEvent = new mongoose.Schema({
 const past = mongoose.model("past", pastEvent);
 
 const member = mongoose.model("member", memberSchema);
-module.exports = { database, member, event, admin, past };
+module.exports = { database, member, event, admin, past, memberLog };
